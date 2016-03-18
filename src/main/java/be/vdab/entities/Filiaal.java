@@ -20,6 +20,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,8 +33,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import be.vdab.valueobjects.Adres;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "filialen")
 public class Filiaal implements Serializable {
@@ -46,6 +55,7 @@ public class Filiaal implements Serializable {
 	@Length(min = 1, max = 50)
 	@SafeHtml
 	private String naam;
+	@XmlElement
 	@Valid
 	@Embedded
 	private Adres adres;
@@ -59,6 +69,8 @@ public class Filiaal implements Serializable {
 	@Digits(integer = 10, fraction = 2)
 	private BigDecimal waardeGebouw;
 	private boolean hoofdFiliaal;
+	@XmlTransient
+	@JsonIgnore
 	@OneToMany(mappedBy = "filiaal")
 	private Set<Werknemer> werknemers;
 	
@@ -83,6 +95,7 @@ public class Filiaal implements Serializable {
 		this(naam, hoofdFiliaal, waardeGebouw, inGebruikName, adres, versie);
 		this.id = id;
 	}
+
 
 	public long getId() {
 		return id;
@@ -114,6 +127,10 @@ public class Filiaal implements Serializable {
 
 	public long getVersie() {
 		return versie;
+	}
+	
+	public void afschrijven() {
+		this.waardeGebouw = BigDecimal.ZERO;
 	}
 
 	

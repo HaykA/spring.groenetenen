@@ -1,6 +1,7 @@
 package be.vdab.web;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import be.vdab.dao.CreateDAOBeans;
 import be.vdab.datasource.CreateDataSourceBean;
+import be.vdab.restservices.CreateRestControllerBeans;
 import be.vdab.services.CreateServiceBeans;
 
 public class Initializer 
@@ -21,7 +23,8 @@ public class Initializer
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] {CreateControllerBeans.class};
+		return new Class<?>[] {CreateControllerBeans.class,
+			CreateRestControllerBeans.class};
 	}
 
 	@Override
@@ -33,6 +36,11 @@ public class Initializer
 	protected Filter[] getServletFilters() {
 		return new Filter[] {new CharacterEncodingFilter("UTF-8"),
 				new OpenEntityManagerInViewFilter()};
+	}
+	
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		registration.setInitParameter("dispatchOptionsRequest", "true");
 	}
 	
 }
