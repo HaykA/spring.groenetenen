@@ -40,13 +40,18 @@ public class FiliaalRestController {
 		this.filiaalService = filiaalService;
 		this.entityLinks = entityLinks;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	FilialenResource findAll() {
+		return new FilialenResource(filiaalService.findAll(), entityLinks);
+	}
 
 	@RequestMapping(path = "{filiaal}", method = RequestMethod.GET)
-	Filiaal read(@PathVariable Filiaal filiaal) {
+	FiliaalResource read(@PathVariable Filiaal filiaal) {
 		if (filiaal == null) {
 			throw new FiliaalNietGevondenException();
 		}
-		return filiaal;
+		return new FiliaalResource(filiaal, entityLinks);
 	}
 	
 	@ExceptionHandler(FiliaalNietGevondenException.class)

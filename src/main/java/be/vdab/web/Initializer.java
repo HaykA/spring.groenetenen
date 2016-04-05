@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import be.vdab.dao.CreateDAOBeans;
 import be.vdab.datasource.CreateDataSourceBean;
+import be.vdab.restclients.CreateRestClientBeans;
 import be.vdab.restservices.CreateRestControllerBeans;
 import be.vdab.services.CreateServiceBeans;
 
@@ -18,7 +19,7 @@ public class Initializer
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] {CreateDataSourceBean.class, CreateDAOBeans.class,
-			CreateServiceBeans.class};
+			CreateServiceBeans.class, CreateRestClientBeans.class};
 	}
 
 	@Override
