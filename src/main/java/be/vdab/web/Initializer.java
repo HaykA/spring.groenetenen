@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import be.vdab.dao.CreateDAOBeans;
 import be.vdab.datasource.CreateDataSourceBean;
+import be.vdab.mail.CreateMailBeans;
 import be.vdab.restclients.CreateRestClientBeans;
 import be.vdab.restservices.CreateRestControllerBeans;
 import be.vdab.services.CreateServiceBeans;
@@ -18,14 +19,15 @@ public class Initializer
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] {CreateDataSourceBean.class, CreateDAOBeans.class,
-			CreateServiceBeans.class, CreateRestClientBeans.class};
+		return new Class<?>[]  {CreateDataSourceBean.class, CreateDAOBeans.class,
+			CreateServiceBeans.class, CreateRestClientBeans.class,
+			CreateMailBeans.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] {CreateControllerBeans.class,
-			CreateRestControllerBeans.class};
+		return new Class<?>[] { CreateControllerBeans.class,
+			CreateRestControllerBeans.class };
 	}
 
 	@Override
@@ -35,8 +37,8 @@ public class Initializer
 	
 	@Override
 	protected Filter[] getServletFilters() {
-		return new Filter[] {new CharacterEncodingFilter("UTF-8"),
-				new OpenEntityManagerInViewFilter()};
+		return new Filter[] { new CharacterEncodingFilter("UTF-8"),
+				new OpenEntityManagerInViewFilter() };
 	}
 	
 	@Override

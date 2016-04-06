@@ -5,5 +5,5 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Results {
-	Rate rate;
+	Rate rate = new Rate();
 }

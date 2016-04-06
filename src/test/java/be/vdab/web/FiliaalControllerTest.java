@@ -28,7 +28,7 @@ public class FiliaalControllerTest {
 		filiaalService = Mockito.mock(FiliaalService.class);
 		
 		filiaal = new Filiaal("naam1", true, BigDecimal.ONE, new Date(),
-				new Adres("straat1", "huisnr1", 1, "gemeente1"), 0L);
+				new Adres("straat1", "huisnr1", 1, "gemeente1"));
 		Mockito.when(filiaalService.read(1)).thenReturn(filiaal);
 		
 		filialen = Collections.emptyList();

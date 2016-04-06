@@ -3,6 +3,7 @@ package be.vdab.web;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,11 +75,11 @@ public class FiliaalController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	String create(@Valid Filiaal filiaal, BindingResult bindingResult) {
+	String create(@Valid Filiaal filiaal, BindingResult bindingResult, HttpServletRequest request) {
 		if (bindingResult.hasErrors()) {
 			return TOEVOEGEN_VIEW;
 		}
-		filiaalService.create(filiaal);
+		filiaalService.create(filiaal, request.getRequestURL().toString());
 		logger.info("filiaal record toevoegen aan database");
 		return REDIRECT_URL_NA_TOEVOEGEN;
 	}
@@ -91,8 +92,7 @@ public class FiliaalController {
 
 	@RequestMapping(path = "afschrijven", method = RequestMethod.POST)
 	ModelAndView afschrijven(@Valid AfschrijvenForm afschrijvenForm, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) { // als de gebruiker geen filiaal
-											// selecteerde
+		if (bindingResult.hasErrors()) {
 			return new ModelAndView(AFSCHRIJVEN_VIEW, "filialen", filiaalService.findNietAfgeschreven());
 		}
 		filiaalService.afschrijven(afschrijvenForm.getFilialen());

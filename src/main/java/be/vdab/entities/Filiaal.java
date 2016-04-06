@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -44,9 +43,6 @@ import be.vdab.valueobjects.Adres;
 public class Filiaal implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Version
-	private long versie;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,19 +76,17 @@ public class Filiaal implements Serializable {
 			boolean hoofdFiliaal,
 			BigDecimal waardeGebouw,
 			Date inGebruikName,
-			Adres adres,
-			long versie) {
+			Adres adres) {
 		this.naam = naam;
 		this.hoofdFiliaal = hoofdFiliaal;
 		this.waardeGebouw = waardeGebouw;
 		this.inGebruikName = inGebruikName;
 		this.adres = adres;
-		this.versie = versie;
 	}
 	
 	public Filiaal(long id, String naam, boolean hoofdFiliaal,
-			BigDecimal waardeGebouw, Date inGebruikName, Adres adres, long versie) {
-		this(naam, hoofdFiliaal, waardeGebouw, inGebruikName, adres, versie);
+			BigDecimal waardeGebouw, Date inGebruikName, Adres adres) {
+		this(naam, hoofdFiliaal, waardeGebouw, inGebruikName, adres);
 		this.id = id;
 	}
 
@@ -123,10 +117,6 @@ public class Filiaal implements Serializable {
 
 	public Set<Werknemer> getWerknemers() {
 		return Collections.unmodifiableSet(werknemers);
-	}
-
-	public long getVersie() {
-		return versie;
 	}
 	
 	public void afschrijven() {

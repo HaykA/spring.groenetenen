@@ -9,5 +9,5 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Rate {
 	@XmlElement(name = "Rate")
-	BigDecimal rate;
+	BigDecimal rate = BigDecimal.ONE;
 }

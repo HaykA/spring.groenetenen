@@ -4,26 +4,31 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import be.vdab.dao.FiliaalDAO;
 import be.vdab.entities.Filiaal;
 import be.vdab.exceptions.FiliaalHeeftNogWerknemersException;
+import be.vdab.mail.MailSender;
 import be.vdab.valueobjects.PostcodeReeks;
 
 @ReadOnlyTransactionalService
 public class FiliaalServiceImpl implements FiliaalService {
 
 	private final FiliaalDAO filiaalDAO;
-
+	private final MailSender mailSender;
+	
 	@Autowired
-	FiliaalServiceImpl(FiliaalDAO filiaalDAO) {
+	FiliaalServiceImpl(FiliaalDAO filiaalDAO, MailSender mailSender) {
 		this.filiaalDAO = filiaalDAO;
+		this.mailSender = mailSender;
 	}
 
 	@Override
 	@ModifyingTransactionalServiceMethod
-	public void create(Filiaal filiaal) {
+	public void create(Filiaal filiaal, String urlFiliaal) {
 		filiaalDAO.save(filiaal);
+		mailSender.nieuwFiliaalMail(filiaal, urlFiliaal + '/' + filiaal.getId());
 	}
 
 	@Override
@@ -76,6 +81,12 @@ public class FiliaalServiceImpl implements FiliaalService {
 		for (Filiaal filiaal : filialen) {
 			filiaal.afschrijven();
 		}
+	}
+
+	@Override
+	@Scheduled(cron = "0 0 1 * * *")
+	public void aantalFilialenMail() {
+		mailSender.aantalFilialenMail(filiaalDAO.count());
 	}
 
 }

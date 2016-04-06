@@ -28,6 +28,8 @@ import org.springframework.web.context.WebApplicationContext;
 import be.vdab.dao.CreateTestDAOBeans;
 import be.vdab.datasource.CreateTestDataSourceBean;
 import be.vdab.entities.Filiaal;
+import be.vdab.mail.CreateMailBeans;
+import be.vdab.restclients.CreateRestClientBeans;
 import be.vdab.services.CreateServiceBeans;
 import be.vdab.services.FiliaalService;
 import be.vdab.valueobjects.Adres;
@@ -35,7 +37,8 @@ import be.vdab.web.CreateControllerBeans;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { CreateTestDataSourceBean.class, CreateTestDAOBeans.class, CreateServiceBeans.class,
-		CreateControllerBeans.class, CreateRestControllerBeans.class })
+		CreateControllerBeans.class, CreateRestControllerBeans.class, CreateRestClientBeans.class,
+		CreateMailBeans.class })
 @WebAppConfiguration
 @Transactional
 public class FiliaalRestControllerTest {
@@ -48,9 +51,9 @@ public class FiliaalRestControllerTest {
 
 	@Before
 	public void before() {
-		filiaal = new Filiaal("naam", true, BigDecimal.TEN, new Date(), new Adres("straat", "huisNr", 1000, "gemeente"),
-				0L);
-		filiaalService.create(filiaal);
+		filiaal = new Filiaal("naam", true, BigDecimal.TEN, new Date(),
+				new Adres("straat", "huisNr", 1000, "gemeente"));
+		filiaalService.create(filiaal, " "); //TODO Vraag omtrent mailSender
 		mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
@@ -60,7 +63,7 @@ public class FiliaalRestControllerTest {
 	}
 
 	@Test
-	public void filiaalDatBestaatLezenInXmlFormaat() throws Exception {
+	public void filiaalDatBestaatLezenInXMLFormaat() throws Exception {
 		mvc.perform(get("/filialen/" + filiaal.getId()).accept(MediaType.APPLICATION_XML)).andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_XML))
 				.andExpect(xpath("/filiaalResource/filiaal/id").string(String.valueOf(filiaal.getId())));
@@ -88,5 +91,4 @@ public class FiliaalRestControllerTest {
 		mvc.perform(post("/filialen").contentType(MediaType.APPLICATION_XML).content(nieuwFiliaalMetFout))
 				.andExpect(status().isBadRequest());
 	}
-
 }

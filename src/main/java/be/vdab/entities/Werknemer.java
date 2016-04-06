@@ -26,12 +26,12 @@ public class Werknemer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String voornaam;
-	private String familienaam;
+	private String voornaam = null;
+	private String familienaam = null;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "filiaalId")
 	private Filiaal filiaal;
-	private BigDecimal wedde;
+	private BigDecimal wedde = null;
 	@Column(unique = true)
 	private long rijksregisterNr;
 	public long getId() {

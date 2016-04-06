@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class FiliaalRestController {
 
 	@RequestMapping(path = "{filiaal}", method = RequestMethod.GET)
 	FiliaalResource read(@PathVariable Filiaal filiaal) {
+		System.out.println("reading filiaal...");
 		if (filiaal == null) {
 			throw new FiliaalNietGevondenException();
 		}
@@ -74,8 +76,8 @@ public class FiliaalRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	HttpHeaders create(@RequestBody @Valid Filiaal filiaal) {
-		filiaalService.create(filiaal);
+	HttpHeaders create(@RequestBody @Valid Filiaal filiaal, HttpServletRequest request) {
+		filiaalService.create(filiaal, request.getRequestURL().toString());
 		HttpHeaders headers = new HttpHeaders();
 		Link link = entityLinks
 				.linkToSingleResource(Filiaal.class, filiaal.getId());

@@ -6,7 +6,7 @@ import be.vdab.entities.Filiaal;
 import be.vdab.valueobjects.PostcodeReeks;
 
 public interface FiliaalService {
-	void create(Filiaal filiaal);
+	void create(Filiaal filiaal, String urlAlleFilialen);
 	Filiaal read(long id);
 	void update(Filiaal filiaal);
 	void delete(long id);
@@ -15,4 +15,5 @@ public interface FiliaalService {
 	List<Filiaal> findByPostcodeReeks(PostcodeReeks reeks);
 	List<Filiaal> findNietAfgeschreven();
 	void afschrijven(Iterable<Filiaal> filialen);
+	void aantalFilialenMail();
 }
