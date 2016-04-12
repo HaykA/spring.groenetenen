@@ -2,7 +2,7 @@ package be.vdab.web;
 
 import java.util.List;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import be.vdab.entities.Filiaal;
 
